@@ -1,0 +1,336 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signature</title>
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✒️</text></svg>"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+    <style>
+      body {
+        min-width: calc(100% - 40px);
+        margin: 40px auto;
+      }
+
+      section {
+        background-color: white;
+      }
+      section button {
+        padding: 2px 8px;
+        margin-top: 0;
+        margin-right: -86px;
+        transition: all 0.2s ease-in;
+      }
+
+      section button span {
+        padding-right: 6px;
+      }
+
+      section:hover button {
+        transform: scale(1.05, 1.05);
+        margin-right: -4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>✒️ Signature</h1>
+      <h2>A website to draw signature for you. Personal use only.</h2>
+    </header>
+    <main>
+      <div style="display: flex; gap: 4px; align-items: center">
+        <label for="sign">enter signature:</label>
+        <input
+          id="sign"
+          name="sign"
+          type="text"
+          value="Aloïs de Gouvello"
+          placeholder="your signature"
+        />
+      </div>
+      <hr />
+      <div
+        id="fontSelect"
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 10px;
+          margin-top: 10px;
+        "
+      ></div>
+    </main>
+    <footer style="display: grid; place-items: center">
+      Signature is a friendly app made @aloisdg
+    </footer>
+    <!--400 x 145 pixels-->
+    <template id="signatureSection">
+      <section
+        style="
+          overflow: hidden;
+          position: relative;
+          display: flex;
+          justify-content: end;
+        "
+      >
+        <div style="position: absolute; padding: 2px">
+          <button type="button">
+            ⭳
+            <span>download</span>
+          </button>
+        </div>
+        <div></div>
+        <div style="position: absolute; bottom: 0; padding: 2px"></div>
+      </section>
+    </template>
+
+    <script>
+      const _fonts = [
+        {
+          designer: "Muhammda ZD Prayogo",
+          fontFace: new FontFace(
+            "Andalan Eug",
+            "local('Andalan Eug'), url('https://fonts.cdnfonts.com/s/77052/AndalanEug-3znG6.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Nabila",
+          fontFace: new FontFace(
+            "Chanilly",
+            "local('Chanilly'), url('https://fonts.cdnfonts.com/s/77230/Chanilly.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Captain Jack",
+          fontFace: new FontFace(
+            "Strong Farmhouse",
+            "local('Strong Farmhouse'), url('https://fonts.cdnfonts.com/s/21191/Strong%20Farmhouse%20Scrpt.woff') format('woff')"
+          ),
+        },
+        // https://www.cdnfonts.com/scarlett-script.font
+        // {
+        //   designer: "FERDIANSYAH_ijemROCKART",
+        //   fontFace: new FontFace(
+        //     "Scarlett Script",
+        //     "local('Scarlett Script'), url('https://fonts.cdnfonts.com/s/76605/Scarlett Slant.woff') format('woff')"
+        //   ),
+        // },
+        // {
+        //   designer: "Kamaruddin_Amarlettering",
+        //   fontFace: new FontFace(
+        //     "shelter",
+        //     "local('shelter'), url('https://fonts.cdnfonts.com/s/76323/Shelter.woff') format('woff')"
+        //   ),
+        // },
+        {
+          designer: "Cataleya Butcher",
+          fontFace: new FontFace(
+            "Marguaritas",
+            "local('Marguaritas'), url('https://fonts.cdnfonts.com/s/76273/Marguaritas.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Musthafa Kamal Emje - Afkari Studio",
+          fontFace: new FontFace(
+            "Malela",
+            "local('Malela'), url('https://fonts.cdnfonts.com/s/75045/MalelaClean-gxJVp.woff') format('woff')"
+          ),
+        },
+        // {
+        //   designer: "Zeenesia studio",
+        //   fontFace: new FontFace(
+        //     "Silkstone",
+        //     "local('Silkstone'), url('https://fonts.cdnfonts.com/s/74965/Silkstone-VG530.woff') format('woff')"
+        //   ),
+        // },
+        {
+          designer: "Rangga Singgih Subekti",
+          fontFace: new FontFace(
+            "Alyson Signature",
+            "local('Alyson Signature'), url('https://fonts.cdnfonts.com/s/74235/AlysonSignature-L35W5.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Ikrar Bey Khubaib",
+          fontFace: new FontFace(
+            "Amanda Signature",
+            "local('Amanda Signature'), url('https://fonts.cdnfonts.com/s/18973/Amanda%20Signature.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Yudi Pratama Chandra",
+          fontFace: new FontFace(
+            "Hiliana",
+            "local('Hiliana'), url('https://fonts.cdnfonts.com/s/27165/Hiliana-VGOWx.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Andri Ardianto - Madatype Studio",
+          fontFace: new FontFace(
+            "Mettallion Signature",
+            "local('Mettallion Signature'), url('https://fonts.cdnfonts.com/s/32050/Mettallion%20Signature.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Octotype",
+          fontFace: new FontFace(
+            "Signature of the Ancient",
+            "local('Signature of the Ancient'), url('https://fonts.cdnfonts.com/s/15034/Signature%20of%20the%20Ancient.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "typeline studio 2018",
+          fontFace: new FontFace(
+            "Manchester Signature",
+            "local('Manchester Signature'), url('https://fonts.cdnfonts.com/s/30664/Manchester%20Signature%20ttf.woff') format('woff')"
+          ),
+        },
+        {
+          designer: "Stringlabs Studio",
+          fontFace: new FontFace(
+            "The Shinda",
+            "local('The Shinda'), url('https://fonts.cdnfonts.com/s/77038/The%20Shinda.woff') format('woff')"
+          ),
+        },
+      ];
+
+      const camalize = (str) =>
+        str
+          .toLowerCase()
+          .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+
+      const autoScale = (ctx, text, canvasWidth, canvasHeight, fontFamily) => {
+        if (!text) {
+          return;
+        }
+
+        const margin = 6;
+        const maxWidth = canvasWidth - margin;
+        const maxHeight = canvasHeight - margin;
+        const minFontSize = 30;
+        const fontSize = autoscaleRec(
+          maxWidth,
+          maxHeight,
+          ctx,
+          text,
+          minFontSize,
+          fontFamily
+        );
+        ctx.font = `${fontSize}px '${fontFamily}'`;
+      };
+
+      const measureRect = (ctx, text, fontSize, fontFamily) => {
+        ctx.font = `${fontSize}px '${fontFamily}'`;
+        let metrics = ctx.measureText(text);
+        return [
+          metrics.width,
+          metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent,
+        ];
+      };
+
+      const autoscaleRec = (
+        maxWidth,
+        maxHeight,
+        ctx,
+        text,
+        fontSize,
+        fontFamily
+      ) => {
+        const loop = (fontSize, width, height) => {
+          if (height > maxHeight || width > maxWidth) return fontSize - 1;
+          const [w, h] = measureRect(ctx, text, fontSize, fontFamily);
+          return loop(fontSize + 1, w, h);
+        };
+
+        const [w, h] = measureRect(ctx, text, fontSize, fontFamily);
+        return loop(fontSize, w, h);
+      };
+
+      const drawText = (ctx, text, canvasWidth, canvasHeight, fontFamily) => {
+        ctx.fillStyle = "#1a1a1a";
+        ctx.textBaseline = "middle";
+        autoScale(ctx, text, canvasWidth, canvasHeight, fontFamily);
+        ctx.fillText(text, 0, canvasHeight / 2);
+      };
+
+      const textBlock = document.querySelector("#sign");
+
+      const write = (canvas, ctx, text, fontFamily) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawText(ctx, text, canvas.width, canvas.height, fontFamily);
+      };
+
+      let _canvases = [];
+
+      const init = async () => {
+        const text = textBlock.value;
+        document.querySelector("#fontSelect").textContent = "loading fonts..";
+
+        const fontPromises = _fonts.map((font) => font.fontFace.load());
+        const fonts = await Promise.all(fontPromises);
+        fonts.forEach((font) => document.fonts.add(font));
+
+        _canvases = fonts.map((font, i) => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 400;
+          canvas.height = 145;
+          canvas.dataset.testid = `canvas-${camalize(font.family)}`;
+          canvas.dataset.fontFamily = font.family;
+
+          const ctx = canvas.getContext("2d");
+          write(canvas, ctx, text, font.family);
+          return canvas;
+        });
+
+        document.querySelector("#fontSelect").innerHTML = "";
+        _canvases.forEach((canvas, i) => {
+          const template = document.querySelector("#signatureSection");
+          const clone = document.importNode(template.content, true);
+          const divs = clone.querySelectorAll("div");
+          divs[0].querySelector("button").onclick = () =>
+            downloadCanvas(canvas);
+          divs[1].appendChild(canvas);
+          divs[2].textContent = `design by ${_fonts[i].designer}`;
+          document.querySelector("#fontSelect").appendChild(clone);
+        });
+      };
+
+      init();
+
+      document.querySelector("#sign").oninput = (e) => {
+        const text = e.target.value;
+        _canvases.forEach((canvas) =>
+          write(
+            canvas,
+            canvas.getContext("2d"),
+            text,
+            canvas.dataset.fontFamily
+          )
+        );
+      };
+
+      function downloadCanvas(canvas) {
+        const fileName = `Signature_${textBlock.value}.png`;
+        const data = canvas
+          .toDataURL("image/png")
+          .replace(/^data:image\/[^;]*/, "data:application/octet-stream")
+          .replace(
+            /^data:application\/octet-stream/,
+            `data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=${fileName}`
+          );
+        const a = document.createElement("a");
+        a.setAttribute("download", fileName);
+        a.href = data;
+        a.click();
+      }
+    </script>
+  </body>
+</html>
